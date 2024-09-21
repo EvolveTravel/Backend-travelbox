@@ -15,7 +15,7 @@ public class OpenApiConfiguration {
         var openApi = new OpenAPI();
         openApi
                 .info(new Info()
-                        .title("To Customize")
+                        .title("Backend TravelBox")
                         .description("To Customize.")
                         .version("v1.0.0")
                         .license(new License().name("Apache 2.0")
