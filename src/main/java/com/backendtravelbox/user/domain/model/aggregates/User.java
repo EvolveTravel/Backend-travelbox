@@ -33,6 +33,7 @@ public class User extends AbstractAggregateRoot<User> {
     @Getter
     private String phoneNumber;
 
+    // Constructor por defecto que inicializa los campos con valores vacíos
     public User() {
         this.firstName = Strings.EMPTY;
         this.lastName = Strings.EMPTY;
@@ -42,6 +43,7 @@ public class User extends AbstractAggregateRoot<User> {
         this.phoneNumber = Strings.EMPTY;
     }
 
+    // Constructor que inicializa los campos con los valores proporcionados
     public User(String firstName, String lastName, String email, String userName, String password, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,7 +53,8 @@ public class User extends AbstractAggregateRoot<User> {
         this.phoneNumber = phoneNumber;
     }
 
-    public User (CreateUserCommand command){
+    // Constructor que inicializa los campos con los valores del comando CreateUserCommand
+    public User(CreateUserCommand command) {
         this();
         this.firstName = command.firstName();
         this.lastName = command.lastName();
@@ -61,6 +64,7 @@ public class User extends AbstractAggregateRoot<User> {
         this.phoneNumber = command.phoneNumber();
     }
 
+    // Método para actualizar los detalles del usuario
     public User updateUser(String firstName, String lastName, String email, String userName, String password, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
