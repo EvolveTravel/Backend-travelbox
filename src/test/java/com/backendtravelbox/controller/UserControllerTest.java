@@ -3,7 +3,6 @@ package com.backendtravelbox.controller;
 import com.backendtravelbox.product.domain.model.commands.CreateProductCommand;
 import com.backendtravelbox.trip.domain.model.commands.CreateTripCommand;
 import com.backendtravelbox.trip.domain.service.TripCommandService;
-import com.backendtravelbox.user.domain.model.aggregates.User;
 import com.backendtravelbox.user.domain.model.commands.CreateUserCommand;
 import com.backendtravelbox.user.domain.service.UserCommandService;
 import com.backendtravelbox.product.domain.service.ProductCommandService;
