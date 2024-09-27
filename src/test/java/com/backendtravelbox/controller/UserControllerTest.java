@@ -164,7 +164,7 @@ class UserControllerTest {
 
         String createUserJson = objectMapper.writeValueAsString(createUserCommand);
 
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/tripstore/v1/users")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createUserJson));
 
@@ -192,7 +192,7 @@ class UserControllerTest {
 
         String createUserJson = objectMapper.writeValueAsString(createUserCommand);
 
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/tripstore/v1/users")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createUserJson));
 
@@ -206,12 +206,31 @@ class UserControllerTest {
         verify(userCommandService, times(0)).handle(any(CreateUserCommand.class));
     }
 
+    @Test
+    void testValidateNoPhoneNumber() throws Exception {
+        // phoneNumber vacío
+        CreateUserCommand createUserCommand = new CreateUserCommand(
+                "Alessandro",
+                "Vega" ,
+                "alessandro123@email.com",
+                "AlessandroVega",
+                "password",
+                ""
+        );
 
+        String createUserJson = objectMapper.writeValueAsString(createUserCommand);
 
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createUserJson));
 
+        resultActions.andExpect(status().isBadRequest());
 
+        resultActions.andExpect(result -> {
+            String responseBody = result.getResponse().getContentAsString();
+            assertTrue(responseBody.contains("Phone Number must not be empty"), "Error message for missing Phone number not found in response");
+        });
 
-
-
-
+        verify(userCommandService, times(0)).handle(any(CreateUserCommand.class));
+    }
 }
