@@ -3,6 +3,7 @@ package com.backendtravelbox.user.domain.model.aggregates;
 import com.backendtravelbox.user.domain.model.commands.CreateUserCommand;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -15,21 +16,27 @@ public class User extends AbstractAggregateRoot<User> {
     @Getter
     private Long id;
 
+    @Setter
     @Getter
     private String firstName;
 
+    @Setter
     @Getter
     private String lastName;
 
+    @Setter
     @Getter
     private String email;
 
+    @Setter
     @Getter
     private String userName;
 
+    @Setter
     @Getter
     private String password;
 
+    @Setter
     @Getter
     private String phoneNumber;
 
