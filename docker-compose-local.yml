@@ -1,0 +1,8 @@
+services:
+  Backend-travelbox:
+    image: backend-travelbox
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
