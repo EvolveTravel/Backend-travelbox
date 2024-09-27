@@ -56,6 +56,37 @@ class UserControllerTest {
         verify(userCommandService, times(1)).handle(any(CreateUserCommand.class));
     }
 
+    @Test
+    void testValidateNoLastName() throws Exception {
+        // LastName vacío
+        CreateUserCommand createUserCommand = new CreateUserCommand(
+                "Alessandro",
+                "" ,
+                "alessandro123@email.com",
+                "AlessandroVega",
+                "password",
+                "123456789"
+        );
+
+        String createUserJson = objectMapper.writeValueAsString(createUserCommand);
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/tripstore/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createUserJson));
+
+        resultActions.andExpect(status().isBadRequest());
+
+        resultActions.andExpect(result -> {
+            String responseBody = result.getResponse().getContentAsString();
+
+        });
+
+        verify(userCommandService, times(0)).handle(any(CreateUserCommand.class));
+    }
+    
+
+
+
 
 
 
