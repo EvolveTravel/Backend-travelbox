@@ -120,9 +120,9 @@ class UserControllerTest {
     @Test
     void testCreateTrip() throws Exception {
         CreateTripCommand createTripCommand = new CreateTripCommand(
-                "",
-                "",
-                ""
+                "New York, United State",
+                "Lima, Peru",
+                "27/10/2024"
         );
 
         String createTripJson = objectMapper.writeValueAsString(createTripCommand);
@@ -148,7 +148,6 @@ class UserControllerTest {
         }
 
         Assertions.assertEquals(HttpStatus.OK.value(), status, "El resultado fue el esperado.");
-
     }
 
     @Test
@@ -174,6 +173,34 @@ class UserControllerTest {
         resultActions.andExpect(result -> {
             String responseBody = result.getResponse().getContentAsString();
             assertTrue(responseBody.contains("Lastname must not be empty"), "Error message for missing phone number not found in response");
+        });
+
+        verify(userCommandService, times(0)).handle(any(CreateUserCommand.class));
+    }
+
+    @Test
+    void testValidateNoPassword() throws Exception {
+        // password vacío
+        CreateUserCommand createUserCommand = new CreateUserCommand(
+                "Alessandro",
+                "Vega" ,
+                "alessandro123@email.com",
+                "AlessandroVega",
+                "",
+                "123456789"
+        );
+
+        String createUserJson = objectMapper.writeValueAsString(createUserCommand);
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/tripstore/v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createUserJson));
+
+        resultActions.andExpect(status().isBadRequest());
+
+        resultActions.andExpect(result -> {
+            String responseBody = result.getResponse().getContentAsString();
+            assertTrue(responseBody.contains("Password must not be empty"), "Error message for missing password not found in response");
         });
 
         verify(userCommandService, times(0)).handle(any(CreateUserCommand.class));
