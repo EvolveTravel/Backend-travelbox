@@ -3,6 +3,7 @@ package com.backendtravelbox.product.domain.model.aggregates;
 import com.backendtravelbox.product.domain.model.commands.CreateProductCommand;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
@@ -19,10 +20,11 @@ public class Product extends AbstractAggregateRoot<Product> {
     private String name;
 
     @Getter
-    private String Description;
+    private String description;
 
+    @Setter
     @Getter
-    private Double Price;
+    private Double price;
 
     @Getter
     private String imageUrl;
@@ -35,15 +37,16 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     public Product() {
         this.name = Strings.EMPTY;
-        this.Description = Strings.EMPTY;
+        this.description = Strings.EMPTY;
         this.imageUrl = Strings.EMPTY;
         this.category = Strings.EMPTY;
+        this.price = 0.0;
     }
 
     public Product(String name, String description, Double price, String imageUrl, Double rating, String category) {
         this.name = name;
-        this.Description = description;
-        this.Price = price;
+        this.description = description;
+        this.price = price;
         this.imageUrl = imageUrl;
         this.rating = rating;
         this.category = category;
@@ -52,8 +55,8 @@ public class Product extends AbstractAggregateRoot<Product> {
     public Product(CreateProductCommand command){
         this();
         this.name = command.name();
-        this.Description = command.description();
-        this.Price = command.price();
+        this.description = command.description();
+        this.price = command.price();
         this.imageUrl = command.imageUrl();
         this.rating = command.rating();
         this.category = command.category();
@@ -61,8 +64,8 @@ public class Product extends AbstractAggregateRoot<Product> {
 
     public Product updateProduct(String name, String description, Double price, String imageUrl, Double rating, String category){
         this.name = name;
-        this.Description = description;
-        this.Price = price;
+        this.description = description;
+        this.price = price;
         this.imageUrl = imageUrl;
         this.rating = rating;
         this.category = category;
