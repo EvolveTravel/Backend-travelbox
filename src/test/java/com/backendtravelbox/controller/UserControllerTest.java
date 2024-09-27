@@ -1,6 +1,7 @@
 package com.backendtravelbox.controller;
 
 import com.backendtravelbox.product.domain.model.commands.CreateProductCommand;
+import com.backendtravelbox.trip.domain.model.commands.CreateTripCommand;
 import com.backendtravelbox.trip.domain.service.TripCommandService;
 import com.backendtravelbox.user.domain.model.aggregates.User;
 import com.backendtravelbox.user.domain.model.commands.CreateUserCommand;
@@ -39,6 +40,9 @@ class UserControllerTest {
 
     @MockBean
     private ProductCommandService productCommandService;
+
+    @MockBean
+    private TripCommandService tripCommandService;
 
     @Test
     void testCreateUser() throws Exception {
@@ -111,6 +115,40 @@ class UserControllerTest {
         }
 
         Assertions.assertEquals(HttpStatus.OK.value(), status, "El resultado fue el esperado.");
+    }
+
+    @Test
+    void testCreateTrip() throws Exception {
+        CreateTripCommand createTripCommand = new CreateTripCommand(
+                "",
+                "",
+                ""
+        );
+
+        String createTripJson = objectMapper.writeValueAsString(createTripCommand);
+
+        when(tripCommandService.handle(any(CreateTripCommand.class))).thenReturn(1L);
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/trips")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createTripJson));
+
+        resultActions.andExpect(status().isOk());
+
+        verify(tripCommandService, times(1)).handle(any(CreateTripCommand.class));
+
+        int status = resultActions.andReturn().getResponse().getStatus();
+
+        if (status == HttpStatus.OK.value()) {
+            System.out.println("El Viaje ha sido creado con éxito.");
+        } else if (status == HttpStatus.BAD_REQUEST.value()) {
+            System.out.println("Error: Solicitud incorrecta. Verifica los datos ingresados.");
+        } else {
+            System.out.println("Error inesperado. Código de estado: " + status);
+        }
+
+        Assertions.assertEquals(HttpStatus.OK.value(), status, "El resultado fue el esperado.");
+
     }
 
     @Test
